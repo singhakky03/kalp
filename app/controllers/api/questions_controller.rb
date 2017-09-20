@@ -3,8 +3,13 @@ class Api::QuestionsController < ApplicationController
 	before_filter :authenticate_key
 	
 	def show
-	  @question = Question.find(params[:id])
-	  render json: @question.to_json
+	  @question = Question.where('id = ? AND private = ?', params[:id], false).first
+	  if @question.present?
+
+	  	render json: @question.to_json
+	  else
+	  	render json: { error: "Couldn't find the question with id=#{params[:id]}" }, status: :not_found
+	  end
 	end
 
 	private
