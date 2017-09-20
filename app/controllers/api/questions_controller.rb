@@ -1,4 +1,4 @@
-class Api::QuestionsController < ApplicationController
+class Api::QuestionsController < Api::BaseController
 
 	before_filter :authenticate_key
 	
