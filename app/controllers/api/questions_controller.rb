@@ -1,12 +1,37 @@
 class Api::QuestionsController < Api::BaseController
 
 	before_filter :authenticate_key
+
+	def index
+		@questions = Question.where('private = ?', false)
+		if @questions.present?
+			render json: { questions: @questions.as_json( root: false, 
+																			only: [:id, :title, :private, :created_at, :updated_at],
+																			include: { 
+																									answers: { 
+																															only: [:id, :body, :created_at, :updated_at],
+																															include: {user: {only: [:id, :name]}}
+																														} 
+																								}
+																		)
+		}
+		else
+			render json: { error: "Couldn't find the questions" }, status: :not_found
+		end
+	end
 	
 	def show
 	  @question = Question.where('id = ? AND private = ?', params[:id], false).first
 	  if @question.present?
-
-	  	render json: @question.to_json
+	  	render json: @question.as_json( root: true, 
+	  																	only: [:id, :title, :created_at, :updated_at],
+	  																	include: { 
+	  																							answers: { 
+	  																													only: [:id, :body, :created_at, :updated_at],
+	  																													include: {user: {only: [:id, :name]}}
+	  																												} 
+	  																						}
+	  																)
 	  else
 	  	render json: { error: "Couldn't find the question with id=#{params[:id]}" }, status: :not_found
 	  end
