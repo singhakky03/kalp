@@ -49,7 +49,7 @@ class Api::QuestionsController < Api::BaseController
 		end
 
 		def authenticate_key
-			return head :forbidden unless has_valid_api_key?
+			render json: { error: "401 Unauthorized - No valid API key provided" }, status: :forbidden unless has_valid_api_key?
 		end
 
 end
