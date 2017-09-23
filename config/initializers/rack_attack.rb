@@ -1,2 +1,0 @@
-class Rack::Attack
-end
