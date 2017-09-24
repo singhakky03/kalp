@@ -28,6 +28,7 @@ gem 'bootstrap-sass', '~> 3.2.0'
 
 gem 'rack-throttle'
 gem 'dalli'
+gem 'whenever'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
