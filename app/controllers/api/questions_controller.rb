@@ -1,8 +1,11 @@
 class Api::QuestionsController < Api::BaseController
 
 	before_filter :authenticate_key
+	require 'request_filter'
 
 	def index
+		#@tenant = ::RequestFilter.testing
+		#binding.pry
 		@questions = Question.where('private = ?', false)
 		if @questions.present?
 			render json: { questions: @questions.as_json( root: false, 
