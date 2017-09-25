@@ -22,8 +22,10 @@ module RailsInterviewProject
 
     # Do not swallow errors in after_commit/after_rollback callbacks.
     config.active_record.raise_in_transactional_callbacks = true
+    config.middleware.use Rack::Attack
     config.middleware.use "RequestFilter"
 
-    
+
+    TOKEN_LIMIT_EXPIRATION = 10
   end
 end

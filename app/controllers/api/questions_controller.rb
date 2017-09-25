@@ -4,8 +4,6 @@ class Api::QuestionsController < Api::BaseController
 	require 'request_filter'
 
 	def index
-		#@tenant = ::RequestFilter.testing
-		#binding.pry
 		@questions = Question.where('private = ?', false)
 		if @questions.present?
 			render json: { questions: @questions.as_json( root: false, 
@@ -53,6 +51,12 @@ class Api::QuestionsController < Api::BaseController
 
 		def authenticate_key
 			render json: { error: "401 Unauthorized - No valid API key provided" }, status: :forbidden unless has_valid_api_key?
+		end
+
+		def request_counter(tenant)
+			day_count = tenant.day_requests + 1
+      total_count = tenant.total_requests + 1
+      tenant.update_columns(:day_requests => day_count, :total_requests => total_count)
 		end
 
 end

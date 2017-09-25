@@ -4,23 +4,35 @@
       %h1 Dashboard
       %section.row.text-center.placeholders
         .col-6.col-sm-3.placeholder
-          %img.img-fluid.rounded-circle{:alt => "Generic placeholder thumbnail", :height => "200", :src => "data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=", :width => "200"}/
-          %h4 Label
-          .text-muted Something else
-      %h2 Section title
+          %h4 Tenants
+          .text-muted 
+            = @tenants.count
+        .col-6.col-sm-3.placeholder
+          %h4 Users
+          .text-muted 
+            =  @questions.map(&:user).flatten.count
+        .col-6.col-sm-3.placeholder
+          %h4 Questions
+          .text-muted 
+            = @questions.count
+        .col-6.col-sm-3.placeholder
+          %h4 Answers
+          .text-muted 
+            = @questions.map(&:answers).flatten.count
+      %h2 Tenants Detail
       .table-responsive
         %table.table.table-striped
           %thead
             %tr
               %th #
-              %th Header
-              %th Header
-              %th Header
-              %th Header
+              %th Name
+              %th Total Api Request
           %tbody
-            %tr
-              %td 1,001
-              %td Lorem
-              %td ipsum
-              %td dolor
-              %td sit
+            - @tenants.each do |tenant|
+              %tr
+                %td #
+                %td 
+                  = tenant.name
+                %td 
+                  = tenant.total_requests
+                

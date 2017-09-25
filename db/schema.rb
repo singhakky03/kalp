@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 20170924163019) do
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
     t.integer  "day_requests",   default: 0
-    t.integer  "total_requests"
+    t.integer  "total_requests", default: 0
   end
 
   create_table "users", force: :cascade do |t|
