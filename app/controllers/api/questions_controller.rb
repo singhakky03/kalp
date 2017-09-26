@@ -45,8 +45,9 @@ class Api::QuestionsController < Api::BaseController
 		end
 
 		def has_valid_api_key?
-			key = Tenant.find_by(api_key: request.headers['HTTP_X_API_KEY'])
-			return key.present?
+			tenant = Tenant.find_by(api_key: request.headers['HTTP_X_API_KEY'])
+			request_counter(tenant)
+			return tenant.present?
 		end
 
 		def authenticate_key
