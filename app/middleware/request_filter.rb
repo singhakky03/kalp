@@ -1,7 +1,7 @@
 require 'rack/throttle'
 require 'rack/attack'
 
-class RequestFilter < Rack::Throttle::Daily
+class RequestFilter < Rack::Attack
   
   def initialize(app)
     options = {
@@ -19,9 +19,10 @@ class RequestFilter < Rack::Throttle::Daily
   
   def call(env)
     #request = Rack::Attack::Request.new(env)
+    #binding.pry
     request = Rack::Request.new(env)
     token = get_token_val(request)
-    request_available?(request) ? app.call(env) : request_limit_exceeded(token)
+    request_available?(request) ? @app.call(env) : request_limit_exceeded(token)
   end
 
   def request_available?(request)
@@ -31,11 +32,13 @@ class RequestFilter < Rack::Throttle::Daily
         #use Rack::Throttle::Interval, :min => 10.0
         return true
       else
-
-        throttle("ip", :limit => 1, :period => 10) { |req|
+        
+        Rack::Attack.throttle("ip", :limit => 1, :period => 10.second) { |req|
+          #binding.pry
+          
           req.ip
-          binding.pry
-          return false
+          #request_limit_exceeded(req.env["HTTP_X_API_KEY"])
+
         }
         #rack_attack = Rack::Attack.new()
         #binding.pry
